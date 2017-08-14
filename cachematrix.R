@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This assignment contains two functions, which are written to avoid the repeated calculation of inverse matrices, which
+## are costly computationally. 
 
-## Write a short comment describing this function
+##The first function, makeCacheMatrix, creates a special "matrix" object that can cache its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+                
+        }
+        get <- function() x
+        setmatrix <- function(solve) m <<- solve
+        getmatrix <- function() m
+        list(set = set, get = get,
+             setmatrix = setmatrix,
+             getmatrix = getmatrix)
 }
 
+## The second, cachesolve, first checks whether the inverse matrix has already been calculated
+## If the inverse has already been calculated, it returns the already-calculated inverse matrix.
+## If, however, the inverse has not yet been calculated, cachesolve returns the inverse of the new matrix. 
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
+cachesolve <- function(x, ...) {
+        m <- x$getmatrix()
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- solve(data, ...)
+        x$setmatrix(m)
+        m
+}
         ## Return a matrix that is the inverse of 'x'
-}
+
